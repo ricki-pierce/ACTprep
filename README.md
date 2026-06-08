@@ -48,11 +48,6 @@ A fully offline, adaptive ACT Math practice app. No internet required after init
 2. Click **Download ZIP**
 3. Extract the ZIP to any folder on your laptop (e.g. `Documents/ACT-Prep`)
 
-**Option B: Clone with Git**
-```bash
-git clone https://github.com/YOUR-USERNAME/act-math-prep.git
-```
-
 ### Step 2 — Open the app
 
 1. Navigate to the folder where you extracted/cloned the files
@@ -74,17 +69,6 @@ Your progress is stored in your browser's **localStorage** — it stays there be
 > ⚠️ **Important:** Progress is tied to the browser you use. If you open `index.html` in Chrome today and Firefox tomorrow, you'll see different progress histories. Always use the same browser.
 >
 > ⚠️ Clearing browser data/cache will erase your progress. To back it up, use your browser's export feature or take a screenshot of your stats page periodically.
-
----
-
-## Uploading to GitHub (for the first time)
-
-1. Create a free account at [github.com](https://github.com)
-2. Click **New repository**, name it `act-math-prep`, keep it **Public** (or Private)
-3. Click **Create repository**
-4. Upload files: click **Add file → Upload files**, drag all files from the project folder, commit
-
-Done! Share the GitHub link so she can download and use it on any laptop.
 
 ---
 
