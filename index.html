@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACT Math Prep</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:         #F7F5F0;
+  --bg2:        #EDEAE3;
+  --surface:    #FFFFFF;
+  --border:     #D8D4CC;
+  --text:       #1A1814;
+  --text-muted: #7A7570;
+  --accent:     #C84B31;
+  --accent2:    #2D6A4F;
+  --accent3:    #1D3557;
+  --gold:       #D4A853;
+  --radius:     12px;
+  --shadow:     0 2px 16px rgba(0,0,0,0.08);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.12);
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-sans:  'DM Sans', system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: var(--font-sans); background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+
+/* LAYOUT */
+.page { display: none; min-height: 100vh; }
+.page.active { display: flex; flex-direction: column; }
+.page-inner { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; width: 100%; flex: 1; }
+
+/* NAV */
+.top-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.nav-logo { font-family: var(--font-serif); font-size: 1.2rem; color: var(--accent); letter-spacing: -0.01em; }
+.btn-home { background: none; border: 1.5px solid var(--border); border-radius: 8px; padding: 6px 16px; font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
+.btn-home:hover { border-color: var(--accent); color: var(--accent); }
+
+/* HOME */
+.home-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 24px; }
+.home-hero { text-align: center; padding: 0 0 48px; }
+.home-hero h1 { font-family: var(--font-serif); font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.15; color: var(--text); margin-bottom: 12px; }
+.home-hero h1 em { font-style: italic; color: var(--accent); }
+.home-hero p { font-size: 1.1rem; color: var(--text-muted); max-width: 440px; margin: 0 auto; }
+.home-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 600px; width: 100%; }
+@media (max-width: 520px) { .home-cards { grid-template-columns: 1fr; } }
+.home-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 32px 24px; cursor: pointer; transition: all 0.2s; text-align: center; box-shadow: var(--shadow); }
+.home-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.home-card .card-icon { font-size: 2.4rem; margin-bottom: 14px; display: block; }
+.home-card h2 { font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 8px; }
+.home-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+
+/* BUTTONS */
+.btn { display: inline-block; padding: 12px 28px; border-radius: 10px; font-family: var(--font-sans); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.15s; border: none; text-align: center; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: #a83928; transform: translateY(-1px); }
+.btn-secondary { background: var(--bg2); color: var(--text); border: 1.5px solid var(--border); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-lg { padding: 16px 36px; font-size: 1.05rem; }
+
+/* PAGE HEADERS */
+.page-header { margin-bottom: 36px; }
+.page-header h1 { font-family: var(--font-serif); font-size: 2rem; line-height: 1.2; margin-bottom: 6px; }
+.page-header p { color: var(--text-muted); font-size: 0.95rem; }
+
+/* BACK LINK */
+.back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); font-size: 0.88rem; cursor: pointer; margin-bottom: 20px; font-weight: 500; transition: color 0.15s; }
+.back-link:hover { color: var(--accent); }
+
+/* STATS OVERVIEW */
+.stats-overview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 36px; }
+@media (max-width: 560px) { .stats-overview { grid-template-columns: 1fr; } }
+.stat-box { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; }
+.stat-box .stat-val { font-family: var(--font-serif); font-size: 2rem; color: var(--accent); line-height: 1.1; }
+.stat-box .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* CHART */
+.chart-container { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 36px; box-shadow: var(--shadow); }
+.chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+.chart-header h2 { font-family: var(--font-serif); font-size: 1.3rem; }
+.toggle-group { display: flex; border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; }
+.toggle-btn { padding: 6px 14px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--text-muted); transition: all 0.15s; font-family: var(--font-sans); }
+.toggle-btn.active { background: var(--accent); color: white; }
+canvas { display: block; width: 100%; }
+#progress-chart { height: 240px; }
+#topic-chart { height: 200px; }
+
+/* TOPIC BREAKDOWN */
+.breakdown-section { margin-bottom: 24px; }
+.breakdown-section h2 { font-family: var(--font-serif); font-size: 1.4rem; margin-bottom: 16px; }
+.topic-row { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; cursor: pointer; transition: all 0.15s; display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 16px; }
+.topic-row:hover { border-color: var(--accent); }
+.topic-row-name { font-weight: 600; font-size: 0.95rem; }
+.topic-row-stats { font-size: 0.85rem; color: var(--text-muted); text-align: right; min-width: 70px; }
+.progress-bar-wrap { width: 80px; height: 6px; background: var(--bg2); border-radius: 3px; overflow: hidden; }
+.progress-bar-fill { height: 100%; border-radius: 3px; background: var(--accent2); transition: width 0.4s; }
+.progress-bar-fill.low { background: var(--accent); }
+.progress-bar-fill.mid { background: var(--gold); }
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+.empty-state .empty-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
+.empty-state p { font-size: 1rem; margin-bottom: 20px; }
+
+/* REVIEW MODE */
+.topic-filter-section { margin-bottom: 28px; }
+.topic-filter-section h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 12px; }
+.mode-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
+@media (max-width: 640px) { .mode-grid { grid-template-columns: 1fr; } }
+.mode-card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius); padding: 24px 20px; cursor: pointer; transition: all 0.2s; text-align: center; }
+.mode-card:hover, .mode-card.selected { border-color: var(--accent); background: #fff8f7; }
+.mode-card .mode-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+.mode-card h3 { font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 4px; }
+.mode-card p { font-size: 0.82rem; color: var(--text-muted); }
+.topic-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.topic-chip { padding: 6px 14px; border-radius: 100px; border: 1.5px solid var(--border); font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.15s; background: var(--surface); white-space: nowrap; }
+.topic-chip:hover { border-color: var(--accent); }
+.topic-chip.active { background: var(--accent); color: white; border-color: var(--accent); }
+.skill-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.skill-chip { padding: 4px 12px; border-radius: 100px; border: 1.5px solid var(--border); font-size: 0.78rem; cursor: pointer; transition: all 0.15s; background: var(--surface); color: var(--text-muted); }
+.skill-chip:hover { border-color: var(--accent2); color: var(--accent2); }
+.skill-chip.active { background: var(--accent2); color: white; border-color: var(--accent2); }
+
+/* PRACTICE */
+.session-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); gap: 16px; flex-wrap: wrap; }
+.session-score { font-weight: 700; font-family: var(--font-mono); color: var(--accent2); }
+.question-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 36px 40px; box-shadow: var(--shadow); margin-bottom: 24px; }
+@media (max-width: 600px) { .question-card { padding: 24px 20px; } }
+.question-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 8px; }
+.q-badge { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; padding: 4px 10px; border-radius: 6px; background: var(--bg2); color: var(--text-muted); }
+.q-number { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); }
+.question-text { font-size: 1.15rem; line-height: 1.65; margin-bottom: 28px; color: var(--text); }
+.choices-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 500px) { .choices-grid { grid-template-columns: 1fr; } }
+.choice-btn { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--bg); cursor: pointer; transition: all 0.15s; text-align: left; font-family: var(--font-sans); font-size: 0.95rem; line-height: 1.45; color: var(--text); width: 100%; }
+.choice-btn:hover:not(:disabled) { border-color: var(--accent); background: #fff8f7; }
+.choice-btn:disabled { cursor: default; }
+.choice-btn.correct { border-color: var(--accent2); background: #e8f5ee; color: var(--accent2); }
+.choice-btn.wrong { border-color: var(--accent); background: #fff0ed; color: var(--accent); }
+.choice-letter { font-weight: 700; font-family: var(--font-mono); font-size: 0.85rem; min-width: 20px; color: inherit; opacity: 0.7; }
+.feedback-box { border-radius: 12px; padding: 24px 28px; margin-top: 4px; animation: fadeUp 0.25s ease; }
+.feedback-box.correct-fb { background: #e8f5ee; border: 1.5px solid #6fcf97; }
+.feedback-box.wrong-fb { background: #fff3f1; border: 1.5px solid #eb9980; }
+.feedback-box h3 { font-family: var(--font-serif); font-size: 1.2rem; margin-bottom: 10px; }
+.feedback-box.correct-fb h3 { color: var(--accent2); }
+.feedback-box.wrong-fb h3 { color: var(--accent); }
+.explanation { font-size: 0.93rem; color: var(--text); line-height: 1.65; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.btn-timer { background: var(--bg2); border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 18px; font-family: var(--font-mono); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; color: var(--text); }
+.btn-timer:hover { border-color: var(--accent); color: var(--accent); }
+.btn-timer.running { background: #fff0ed; border-color: var(--accent); color: var(--accent); }
+.question-actions { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ===============================================================
+     PAGE: HOME
+     =============================================================== -->
+<div id="page-home" class="page active">
+  <div class="home-wrap">
+    <div class="home-hero">
+      <h1>ACT Math<br/><em>Prep</em></h1>
+      <p>Adaptive practice for all 20 ACT Math topics. Every problem is unique. Every session gets smarter.</p>
+    </div>
+    <div class="home-cards">
+      <div class="home-card" onclick="showProgress()">
+        <span class="card-icon">📈</span>
+        <h2>See My Progress</h2>
+        <p>View your performance over time with charts and topic breakdowns.</p>
+      </div>
+      <div class="home-card" onclick="showReviewMode()">
+        <span class="card-icon">✏️</span>
+        <h2>Review</h2>
+        <p>Practice problems — adaptive to your strengths and weaknesses.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===============================================================
+     PAGE: PROGRESS
+     =============================================================== -->
+<div id="page-progress" class="page">
+  <nav class="top-nav">
+    <span class="nav-logo">ACT Math Prep</span>
+    <button class="btn-home" onclick="goHome()">⌂ Home</button>
+  </nav>
+  <div class="page-inner">
+    <div class="page-header">
+      <h1>My Progress</h1>
+      <p>Track your improvement across all sessions and topics.</p>
+    </div>
+    <div class="stats-overview">
+      <div class="stat-box"><div class="stat-val" id="stat-total">0</div><div class="stat-label">Total Questions</div></div>
+      <div class="stat-box"><div class="stat-val" id="stat-correct">0</div><div class="stat-label">Correct</div></div>
+      <div class="stat-box"><div class="stat-val" id="stat-pct">0%</div><div class="stat-label">Accuracy</div></div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-header">
+        <h2>Overall Performance</h2>
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-chart="main" data-mode="count" onclick="setChartMode('count','main')">Count</button>
+          <button class="toggle-btn" data-chart="main" data-mode="percent" onclick="setChartMode('percent','main')">%</button>
+        </div>
+      </div>
+      <canvas id="progress-chart"></canvas>
+    </div>
+    <div class="breakdown-section">
+      <h2>Topic Breakdown</h2>
+      <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:16px">Click any topic to see its detailed timeline.</p>
+      <div id="topic-breakdown-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===============================================================
+     PAGE: TOPIC DETAIL
+     =============================================================== -->
+<div id="page-topic-detail" class="page">
+  <nav class="top-nav">
+    <span class="nav-logo">ACT Math Prep</span>
+    <button class="btn-home" onclick="goHome()">⌂ Home</button>
+  </nav>
+  <div class="page-inner">
+    <span class="back-link" onclick="showProgress()">← Back to Progress</span>
+    <div class="page-header">
+      <h1 id="topic-detail-title">Topic</h1>
+      <p>Overall: <strong id="topic-detail-overall">—</strong></p>
+    </div>
+    <div class="chart-container">
+      <div class="chart-header">
+        <h2>Topic Timeline</h2>
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-chart="topic" data-mode="count" onclick="setChartMode('count','topic')">Count</button>
+          <button class="toggle-btn" data-chart="topic" data-mode="percent" onclick="setChartMode('percent','topic')">%</button>
+        </div>
+      </div>
+      <canvas id="topic-chart"></canvas>
+    </div>
+    <div class="breakdown-section">
+      <h2>Skill Breakdown</h2>
+      <div id="topic-skill-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===============================================================
+     PAGE: REVIEW MODE SELECTOR
+     =============================================================== -->
+<div id="page-review-mode" class="page">
+  <nav class="top-nav">
+    <span class="nav-logo">ACT Math Prep</span>
+    <button class="btn-home" onclick="goHome()">⌂ Home</button>
+  </nav>
+  <div class="page-inner">
+    <div class="page-header">
+      <h1>Review</h1>
+      <p>Choose your practice mode and topic focus.</p>
+    </div>
+    <div class="topic-filter-section">
+      <h3>Practice Mode</h3>
+      <div class="mode-grid">
+        <div class="mode-card selected" data-mode="all" onclick="selectMode('all')">
+          <span class="mode-icon">🎯</span>
+          <h3>Adaptive</h3>
+          <p>Mix of all types — weak areas appear more often, strong areas every now and then.</p>
+        </div>
+        <div class="mode-card" data-mode="problem-areas" onclick="selectMode('problem-areas')">
+          <span class="mode-icon">🔥</span>
+          <h3>Problem Areas</h3>
+          <p>Focus on the question types you answer incorrectly most often.</p>
+        </div>
+        <div class="mode-card" data-mode="easy-wins" onclick="selectMode('easy-wins')">
+          <span class="mode-icon">⭐</span>
+          <h3>Easy Wins</h3>
+          <p>Practice the question types you already do well on to stay sharp.</p>
+        </div>
+      </div>
+    </div>
+    <div class="topic-filter-section">
+      <h3>Filter by Topic (optional)</h3>
+      <div class="topic-chips" id="review-topic-chips"></div>
+      <div class="skill-chips" id="review-skill-chips" style="margin-top:12px"></div>
+    </div>
+    <button class="btn btn-primary btn-lg" onclick="startPractice()" style="margin-top:8px">Start Practicing →</button>
+  </div>
+</div>
+
+<!-- ===============================================================
+     PAGE: PRACTICE
+     =============================================================== -->
+<div id="page-practice" class="page">
+  <nav class="top-nav">
+    <span class="nav-logo">ACT Math Prep</span>
+    <button class="btn-home" onclick="goHome()">⌂ Home</button>
+  </nav>
+  <div class="session-bar">
+    <span>Session: <span class="session-score" id="session-score">0/0 correct</span></span>
+    <span style="display:flex;align-items:center;gap:10px">
+      <button class="btn-timer" id="btn-timer" onclick="toggleTimer()">▶ Time Me</button>
+      <span id="timer-display" style="font-family:var(--font-mono);font-size:0.9rem;color:var(--accent)">0:00</span>
+    </span>
+  </div>
+  <div class="page-inner" style="padding-top:28px">
+    <div class="question-card">
+      <div class="question-meta">
+        <span class="q-badge" id="q-topic-badge">Topic</span>
+        <span class="q-number" id="q-number">Q1</span>
+      </div>
+      <div class="question-text" id="q-text">Loading question...</div>
+      <div class="choices-grid" id="choices-grid"></div>
+    </div>
+    <div id="feedback-box"></div>
+    <div class="question-actions">
+      <button id="next-btn" class="btn btn-primary" style="display:none" onclick="loadNextQuestion()">Next Question →</button>
+      <button class="btn btn-secondary" onclick="showReviewMode()">Change Settings</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// QUESTIONS ENGINE
+// ============================================================
+const TOPICS = {
+  functions:         { label: "Functions",            color: "#e74c3c", skills: ["Function Notation","Transforming Functions","Domain & Range","Composite Functions","Function Operations","Inverse Functions"] },
+  statistics:        { label: "Statistics",           color: "#e67e22", skills: ["Mean Median Mode","Interpreting Venn Diagrams","Standard Deviation & Range","Expected Value"] },
+  probability:       { label: "Probability",          color: "#f1c40f", skills: ["Basic Probability"] },
+  triangleProperties:{ label: "Triangle Properties",  color: "#2ecc71", skills: ["Similar Triangles","Sum of Angles in a Triangle","Angle-Side Inequality Theorem","Isosceles & Equilateral Triangles"] },
+  solveForVariable:  { label: "Solve for Variable",   color: "#1abc9c", skills: ["Solving Equations for a Variable","Solving Inequalities for a Variable"] },
+  fractionsDecimals: { label: "Fractions & Decimals", color: "#3498db", skills: ["Operations with Fractions and Decimals","Optimize Fractions"] },
+  factoring:         { label: "Factoring",             color: "#9b59b6", skills: ["Factoring Quadratic Expressions","Zeroes and Roots of a Function","Quadratic Formula"] },
+  systemsOfEquations:{ label: "Systems of Equations", color: "#fd79a8", skills: ["Systems of Equations"] },
+  circles:           { label: "Circles",               color: "#00b894", skills: ["Sector Area","Arc Length","Equation of a Circle","Central & Inscribed Angles"] },
+  lines:             { label: "Lines",                 color: "#6c5ce7", skills: ["Slope Calculation","Equation of a Line","Parallel & Perpendicular Lines"] },
+  numberProperties:  { label: "Number Properties",    color: "#d63031", skills: ["Rational and Irrational","Multiples","Factors","Divisibility Rules","Integer Properties"] },
+  polynomials:       { label: "Polynomials",           color: "#0984e3", skills: ["FOIL","Polynomial Arithmetic","Special Binomial Expansion"] },
+  trigSOHCAHTOA:     { label: "Trig: SOH CAH TOA",    color: "#00cec9", skills: ["SOHCAHTOA"] },
+  complexNumbers:    { label: "Complex Numbers",       color: "#e17055", skills: ["Complex & Imaginary Numbers"] },
+  coordinatePlane:   { label: "Coordinate Plane",      color: "#74b9ff", skills: ["(x,y) Coordinate Plane","Distance Formula"] },
+  unitConversion:    { label: "Unit Conversion",       color: "#55efc4", skills: ["Unit Conversion"] },
+  ratios:            { label: "Ratios",                color: "#a29bfe", skills: ["Ratios"] },
+  sequences:         { label: "Sequences",             color: "#fd7272", skills: ["Sequence Notation","Arithmetic Sequence (Sum)","Arithmetic Sequence (Nth Term)"] },
+  area:              { label: "Area",                  color: "#badc58", skills: ["Area"] },
+  advancedTrig:      { label: "Advanced Trigonometry", color: "#f9ca24", skills: ["The Unit Circle & Radians","Trig Graph Vocabulary","Trig Identities"] }
+};
+
+function rInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function rChoice(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
+function gcd(a,b){return b===0?a:gcd(b,a%b);}
+function simplifyFrac(n,d){const g=gcd(Math.abs(n),Math.abs(d));return[n/g,d/g];}
+function fracStr(n,d){const[sn,sd]=simplifyFrac(n,d);return sd===1?`${sn}`:`${sn}/${sd}`;}
+function makeChoices(correct,wrongs){const all=[correct,...wrongs.slice(0,3)];return shuffle(all.filter((v,i,a)=>a.indexOf(v)===i||i===0));}
+
+const GENERATORS = {
+  "Function Notation":()=>{const a=rInt(2,8),b=rInt(1,10),x=rInt(1,6),c=rInt(1,5);const fx=a*x*x-b*x+c;return{question:`If f(x) = ${a}x² − ${b}x + ${c}, what is f(${x})?`,choices:makeChoices(fx,[fx+rInt(1,4),fx-rInt(1,4),fx+rInt(5,9)]),answer:fx,explanation:`Substitute x = ${x}: f(${x}) = ${a}(${x})² − ${b}(${x}) + ${c} = ${a*x*x} − ${b*x} + ${c} = ${fx}.`};},
+  "Transforming Functions":()=>{const transforms=[{desc:"shifts the graph up",type:"up"},{desc:"shifts the graph down",type:"down"},{desc:"shifts the graph right",type:"right"},{desc:"shifts the graph left",type:"left"}];const t=rChoice(transforms);const k=rInt(2,8);let newFunc,explanation;if(t.type==="up"){newFunc=`f(x) + ${k}`;explanation=`Adding ${k} outside f(x) shifts the graph up ${k} units.`;}else if(t.type==="down"){newFunc=`f(x) − ${k}`;explanation=`Subtracting ${k} outside f(x) shifts the graph down ${k} units.`;}else if(t.type==="right"){newFunc=`f(x − ${k})`;explanation=`Replacing x with (x − ${k}) inside f(x) shifts the graph right ${k} units.`;}else{newFunc=`f(x + ${k})`;explanation=`Replacing x with (x + ${k}) inside f(x) shifts the graph left ${k} units.`;}const pool=shuffle([newFunc,`f(x + ${k})`,`f(x − ${k})`,`f(x) − ${k}`,`f(x) + ${k}`].filter((v,i,a)=>a.indexOf(v)===i));const choices=pool.slice(0,4);if(!choices.includes(newFunc))choices[3]=newFunc;return{question:`The graph of f(x) is transformed so that every point ${t.desc} by ${k} units. Which function represents this transformation?`,choices:shuffle(choices),answer:newFunc,explanation};},
+  "Domain & Range":()=>{const a=rInt(2,8),b=rInt(1,6);const types=[{question:`What is the domain of f(x) = √(x − ${b})?`,answer:`x ≥ ${b}`,wrongs:[`x > ${b}`,`x ≤ ${b}`,`x ≥ ${-b}`],explanation:`For a square root, the expression inside must be ≥ 0. So x − ${b} ≥ 0, which means x ≥ ${b}.`},{question:`What is the range of f(x) = ${a}x² + ${b}?`,answer:`y ≥ ${b}`,wrongs:[`y ≤ ${b}`,`y ≥ ${-b}`,"All real numbers"],explanation:`Since ${a}x² ≥ 0 for all x, the minimum value of f(x) is ${b} (when x = 0). So the range is y ≥ ${b}.`}];const t=rChoice(types);return{...t,choices:makeChoices(t.answer,t.wrongs)};},
+  "Composite Functions":()=>{const a=rInt(2,5),b=rInt(1,6),c=rInt(1,4),d=rInt(1,5),x=rInt(1,4);const fofg=c*(a*x+b)+d;return{question:`If f(x) = ${c}x + ${d} and g(x) = ${a}x + ${b}, what is (f∘g)(${x})?`,choices:makeChoices(fofg,[fofg+2,fofg-2,fofg+5]),answer:fofg,explanation:`First find g(${x}) = ${a}(${x}) + ${b} = ${a*x+b}. Then f(g(${x})) = ${c}(${a*x+b}) + ${d} = ${c*(a*x+b)} + ${d} = ${fofg}.`};},
+  "Function Operations":()=>{const a=rInt(2,6),b=rInt(1,8),c=rInt(1,5),d=rInt(1,6),x=rInt(1,4);const fx=a*x+b,gx=c*x+d;const ops=[{op:"+",res:fx+gx,exp:`f(${x}) + g(${x}) = ${fx} + ${gx} = ${fx+gx}`},{op:"−",res:fx-gx,exp:`f(${x}) − g(${x}) = ${fx} − ${gx} = ${fx-gx}`},{op:"×",res:fx*gx,exp:`f(${x}) × g(${x}) = ${fx} × ${gx} = ${fx*gx}`}];const chosen=rChoice(ops);return{question:`If f(x) = ${a}x + ${b} and g(x) = ${c}x + ${d}, what is (f ${chosen.op} g)(${x})?`,choices:makeChoices(chosen.res,[chosen.res+3,chosen.res-3,chosen.res+7]),answer:chosen.res,explanation:chosen.exp};},
+  "Inverse Functions":()=>{const a=rInt(2,7),b=rInt(1,10),y=rInt(3,12);const inv=(y-b)/a;const invClean=Math.round(inv*100)/100;const answerStr=Number.isInteger(invClean)?`${invClean}`:`(${y} − ${b})/${a}`;return{question:`If f(x) = ${a}x + ${b}, what is f⁻¹(${y})?`,choices:makeChoices(answerStr,[`(${y}+${b})/${a}`,`${a*y-b}`,`${a}/${y-b}`]),answer:answerStr,explanation:`Set y = ${a}x + ${b}. Swap x and y: x = ${a}y + ${b}. Solve for y: y = (x − ${b})/${a}. So f⁻¹(${y}) = (${y} − ${b})/${a}.`};},
+  "Mean Median Mode":()=>{const t=rChoice(["mean","median","mode"]);const nums=Array.from({length:rInt(5,7)},()=>rInt(10,30));if(t==="mode"){nums.push(rChoice(nums));}const sorted=[...nums].sort((a,b)=>a-b);if(t==="mean"){const sum=nums.reduce((a,b)=>a+b,0);const mean=Math.round(sum/nums.length*10)/10;return{question:`Find the mean of: {${nums.join(", ")}}`,choices:makeChoices(mean,[mean+2,mean-2,mean+5]),answer:mean,explanation:`Sum = ${sum}. Mean = ${sum} ÷ ${nums.length} = ${mean}.`};}else if(t==="median"){const mid=Math.floor(sorted.length/2);const answer=sorted.length%2===0?(sorted[mid-1]+sorted[mid])/2:sorted[mid];return{question:`Find the median of: {${nums.join(", ")}}`,choices:makeChoices(answer,[answer+2,answer-2,answer+4]),answer,explanation:`Sorted: {${sorted.join(", ")}}. Median = ${answer}.`};}else{const freq={};nums.forEach(n=>freq[n]=(freq[n]||0)+1);const answer=+Object.entries(freq).sort((a,b)=>b[1]-a[1])[0][0];return{question:`Find the mode of: {${nums.join(", ")}}`,choices:makeChoices(answer,[answer+1,sorted[0],sorted[sorted.length-1]]),answer,explanation:`The number that appears most often is ${answer}.`};}},
+  "Interpreting Venn Diagrams":()=>{const totalA=rInt(10,20),both=rInt(3,8),totalB=rInt(10,20);const onlyA=totalA-both,onlyB=totalB-both,total=onlyA+both+onlyB+rInt(2,8);const types=[{question:`In a group of ${total} students, ${totalA} study Math, ${totalB} study Science, and ${both} study both. How many study only Math?`,answer:onlyA,wrongs:[totalA,both,totalA+totalB-both],explanation:`Only Math = Total Math − Both = ${totalA} − ${both} = ${onlyA}.`},{question:`In a group of ${total} students, ${totalA} study Math, ${totalB} study Science, and ${both} study both. How many study at least one subject?`,answer:totalA+totalB-both,wrongs:[totalA+totalB,both,total],explanation:`At least one = A + B − Both = ${totalA} + ${totalB} − ${both} = ${totalA+totalB-both}.`}];const t=rChoice(types);return{...t,choices:makeChoices(t.answer,t.wrongs)};},
+  "Standard Deviation & Range":()=>{const nums=Array.from({length:5},()=>rInt(5,25));const sorted=[...nums].sort((a,b)=>a-b);const range=sorted[sorted.length-1]-sorted[0];return{question:`Find the range of the data set: {${nums.join(", ")}}`,choices:makeChoices(range,[range+2,range-2,range+5]),answer:range,explanation:`Range = Max − Min = ${sorted[sorted.length-1]} − ${sorted[0]} = ${range}.`};},
+  "Expected Value":()=>{const p=rChoice([0.1,0.2,0.25,0.3,0.4,0.5]);const win=rInt(10,50),lose=rInt(5,20);const ev=Math.round((p*win-(1-p)*lose)*100)/100;return{question:`A game pays $${win} with probability ${p} and costs $${lose} with probability ${1-p}. What is the expected value?`,choices:makeChoices(ev,[ev+2,ev-2,Math.round(p*win*100)/100]),answer:ev,explanation:`E = p×win − (1−p)×loss = ${p}×${win} − ${1-p}×${lose} = ${p*win} − ${(1-p)*lose} = ${ev}.`};},
+  "Basic Probability":()=>{const total=rInt(10,20);const favorable=rInt(1,total-1);const[n,d]=simplifyFrac(favorable,total);const answer=d===1?`${n}`:`${n}/${d}`;return{question:`A bag contains ${total} marbles. ${favorable} are red. If you pick one at random, what is the probability of picking a red marble?`,choices:makeChoices(answer,[`${favorable+1}/${total}`,`${total-favorable}/${total}`,`${favorable}/${total+1}`]),answer,explanation:`P(red) = favorable/total = ${favorable}/${total} = ${answer}.`};},
+  "Similar Triangles":()=>{const a=rInt(3,8),b=rInt(4,10),scale=rInt(2,4);const c=a*scale;const answer=b*scale;return{question:`Two similar triangles have corresponding sides ${a} and ${c}. If another side of the first triangle is ${b}, what is the corresponding side of the second?`,choices:makeChoices(answer,[answer+rInt(1,3),answer-rInt(1,2),b+scale]),answer,explanation:`Scale factor = ${c}/${a} = ${scale}. The corresponding side = ${b} × ${scale} = ${answer}.`};},
+  "Sum of Angles in a Triangle":()=>{const a=rInt(30,70),b=rInt(30,70);const c=180-a-b;if(c<=0)return GENERATORS["Sum of Angles in a Triangle"]();return{question:`Two angles of a triangle measure ${a}° and ${b}°. What is the third angle?`,choices:makeChoices(c,[c+10,c-10,180-a]),answer:c,explanation:`Sum of angles = 180°. Third angle = 180 − ${a} − ${b} = ${c}°.`};},
+  "Angle-Side Inequality Theorem":()=>{const sides=[rInt(3,6),rInt(7,10),rInt(11,15)];const shuffled=shuffle(sides);return{question:`A triangle has sides of length ${shuffled[0]}, ${shuffled[1]}, and ${shuffled[2]}. The largest angle is opposite which side?`,choices:makeChoices(`${Math.max(...shuffled)}`,[`${Math.min(...shuffled)}`,`${shuffled[0]}`,`${shuffled[1]}`]),answer:`${Math.max(...shuffled)}`,explanation:`The largest angle is always opposite the longest side. The longest side is ${Math.max(...shuffled)}.`};},
+  "Isosceles & Equilateral Triangles":()=>{const base=rInt(20,70),leg=rInt(base+10,90);const baseAngle=Math.round((180-base)/2);const types=[{question:`An isosceles triangle has a vertex angle of ${base}°. What is each base angle?`,answer:`${baseAngle}°`,wrongs:[`${base}°`,`${180-baseAngle}°`,`${baseAngle+5}°`],explanation:`Base angles = (180 − ${base}) / 2 = ${baseAngle}°.`},{question:`An equilateral triangle has a perimeter of ${leg*3}. What is the length of each side?`,answer:`${leg}`,wrongs:[`${leg+1}`,`${leg-1}`,`${leg*2}`],explanation:`Equilateral triangle: all sides equal. Side = ${leg*3} / 3 = ${leg}.`}];const t=rChoice(types);return{...t,choices:makeChoices(t.answer,t.wrongs)};},
+  "Solving Equations for a Variable":()=>{const a=rInt(2,8),b=rInt(1,12),c=rInt(1,20);const x=(c-b)/a;const answer=Number.isInteger(x)?x:Math.round(x*100)/100;return{question:`Solve for x: ${a}x + ${b} = ${c}`,choices:makeChoices(answer,[answer+1,answer-1,answer+2]),answer,explanation:`${a}x = ${c} − ${b} = ${c-b}. x = ${c-b}/${a} = ${answer}.`};},
+  "Solving Inequalities for a Variable":()=>{const a=rInt(2,6),b=rInt(1,10);const ops=rChoice(["<",">"]);const c=rInt(b+a,30);const x=(c-b)/a;const answer=ops==="<"?`x < ${x}`:`x > ${x}`;const wrongs=[ops==="<"?`x > ${x}`:`x < ${x}`,`x = ${x}`,`x ≤ ${x}`];return{question:`Solve: ${a}x + ${b} ${ops} ${c}`,choices:makeChoices(answer,wrongs),answer,explanation:`${a}x ${ops} ${c} − ${b} = ${c-b}. x ${ops} ${x}.`};},
+  "Operations with Fractions and Decimals":()=>{const ops=[()=>{const n1=rInt(1,5),d1=rInt(2,8),n2=rInt(1,5),d2=rInt(2,8);const resN=n1*d2+n2*d1,resD=d1*d2;const ans=fracStr(resN,resD);return{question:`What is ${n1}/${d1} + ${n2}/${d2}?`,answer:ans,wrongs:[fracStr(n1+n2,d1+d2),fracStr(resN+1,resD),fracStr(resN,resD+1)],explanation:`Common denom: (${n1}×${d2}+${n2}×${d1})/(${d1}×${d2}) = ${resN}/${resD} = ${ans}.`};},()=>{const n1=rInt(1,5),d1=rInt(2,8),n2=rInt(1,5),d2=rInt(2,8);const resN=n1*n2,resD=d1*d2;const ans=fracStr(resN,resD);return{question:`What is ${n1}/${d1} × ${n2}/${d2}?`,answer:ans,wrongs:[fracStr(resN+1,resD),fracStr(n1+n2,d1+d2),fracStr(resN,resD+1)],explanation:`Multiply: (${n1}×${n2})/(${d1}×${d2}) = ${resN}/${resD} = ${ans}.`};}];const t=rChoice(ops)();return{...t,choices:makeChoices(t.answer,t.wrongs)};},
+  "Optimize Fractions":()=>{const nums=[rInt(2,5),rInt(6,9),rInt(1,4),rInt(7,12)];const max=Math.max(...nums),min=Math.min(...nums);const answer=`${max}/${min}`;return{question:`Using the digits ${nums.join(", ")}, each exactly once, what fraction a/b has the MAXIMUM value?`,choices:makeChoices(answer,[`${min}/${max}`,`${nums[1]}/${nums[0]}`,`${nums[2]}/${nums[3]}`]),answer,explanation:`To maximize a/b, put the largest (${max}) on top and smallest (${min}) on bottom: ${answer}.`};},
+  "Factoring Quadratic Expressions":()=>{const r1=rInt(-6,6),r2=rInt(-6,6);const b=-(r1+r2),c=r1*r2;const bStr=b>=0?`+ ${b}`:`− ${Math.abs(b)}`;const cStr=c>=0?`+ ${c}`:`− ${Math.abs(c)}`;const answer=`(x ${r1>=0?'−':'+'} ${Math.abs(r1)})(x ${r2>=0?'−':'+'} ${Math.abs(r2)})`;return{question:`Factor the quadratic: x² ${bStr}x ${cStr}`,choices:makeChoices(answer,[`(x + ${Math.abs(r1)})(x + ${Math.abs(r2)})`,`(x − ${Math.abs(r1)+1})(x + ${Math.abs(r2)})`,`(x − ${Math.abs(r1)})(x + ${Math.abs(r2)+1})`]),answer,explanation:`Find two numbers that multiply to ${c} and add to ${b}: ${-r1} and ${-r2}. Factored: ${answer}.`};},
+  "Zeroes and Roots of a Function":()=>{const r1=rInt(-5,-1),r2=rInt(1,5);const answer=`x = ${r1} and x = ${r2}`;return{question:`What are the zeros of f(x) = (x − ${r2})(x + ${Math.abs(r1)})?`,choices:makeChoices(answer,[`x = ${-r1} and x = ${-r2}`,`x = ${r1} and x = ${-r2}`,`x = ${-r1} and x = ${r2}`]),answer,explanation:`Set each factor = 0: x − ${r2} = 0 → x = ${r2}; x + ${Math.abs(r1)} = 0 → x = ${r1}.`};},
+  "Quadratic Formula":()=>{const bQ=rInt(2,5)*2,c=rInt(1,5);const disc=bQ*bQ-4*c;if(disc<0||Math.sqrt(disc)!==Math.floor(Math.sqrt(disc))){return{question:`For x² − ${bQ}x + ${c*2} = 0, what is the discriminant?`,choices:makeChoices(bQ*bQ-4*c*2,[bQ*bQ,4*c*2,0]),answer:bQ*bQ-4*c*2,explanation:`Discriminant = b² − 4ac = (${bQ})² − 4(1)(${c*2}) = ${bQ*bQ} − ${4*c*2} = ${bQ*bQ-4*c*2}.`};}const sqrtDisc=Math.sqrt(disc);const x1=(-bQ+sqrtDisc)/2,x2=(-bQ-sqrtDisc)/2;return{question:`Solve x² − ${bQ}x + ${c} = 0 using the quadratic formula.`,choices:makeChoices(`x = ${x1} or x = ${x2}`,[`x = ${x1+1} or x = ${x2-1}`,`x = ${x1-1} or x = ${x2}`,`x = ${-x1} or x = ${-x2}`]),answer:`x = ${x1} or x = ${x2}`,explanation:`x = (${bQ} ± √${disc}) / 2 = (${bQ} ± ${sqrtDisc}) / 2. So x = ${x1} or x = ${x2}.`};},
+  "Systems of Equations":()=>{const x=rInt(-4,6),y=rInt(-4,6),a1=rInt(1,4),b1=rInt(1,4),a2=rInt(1,4),b2=rInt(1,4);const c1=a1*x+b1*y,c2=a2*x+b2*y;const answer=`x = ${x}, y = ${y}`;return{question:`Solve: ${a1}x + ${b1}y = ${c1} and ${a2}x + ${b2}y = ${c2}`,choices:makeChoices(answer,[`x = ${x+1}, y = ${y}`,`x = ${x}, y = ${y+1}`,`x = ${y}, y = ${x}`]),answer,explanation:`By substitution or elimination: x = ${x}, y = ${y}. Check: ${a1}(${x})+${b1}(${y})=${c1} ✓`};},
+  "Sector Area":()=>{const r=rInt(3,10),angle=rChoice([30,45,60,90,120,180]);const area=Math.round((angle/360)*Math.PI*r*r*100)/100;return{question:`A circle has radius ${r}. What is the area of a sector with central angle ${angle}°? (Use π ≈ 3.14159)`,choices:makeChoices(area,[Math.round(area*1.1*100)/100,Math.round(area*0.9*100)/100,Math.round(area*1.5*100)/100]),answer:area,explanation:`Sector Area = (${angle}/360) × π × r² = (${angle}/360) × π × ${r}² ≈ ${area}.`};},
+  "Arc Length":()=>{const r=rInt(3,10),angle=rChoice([30,45,60,90,120]);const arc=Math.round((angle/360)*2*Math.PI*r*100)/100;return{question:`A circle has radius ${r}. What is the arc length for a central angle of ${angle}°? (Use π ≈ 3.14159)`,choices:makeChoices(arc,[Math.round(arc*1.2*100)/100,Math.round(arc*0.8*100)/100,Math.round((arc+2)*100)/100]),answer:arc,explanation:`Arc Length = (${angle}/360) × 2πr = (${angle}/360) × 2π(${r}) ≈ ${arc}.`};},
+  "Equation of a Circle":()=>{const h=rInt(-5,5),k=rInt(-5,5),r=rInt(2,8);const types=[{question:`What is the center of (x − ${h})² + (y − ${k})² = ${r*r}?`,answer:`(${h}, ${k})`,wrongs:[`(${-h}, ${-k})`,`(${h}, ${-k})`,`(${-h}, ${k})`],explanation:`The equation (x−h)²+(y−k)²=r² has center (h,k). Here h=${h}, k=${k}.`},{question:`What is the radius of (x − ${h})² + (y − ${k})² = ${r*r}?`,answer:`${r}`,wrongs:[`${r*r}`,`${r+1}`,`${r-1}`],explanation:`The radius is √${r*r} = ${r}.`}];const t=rChoice(types);return{...t,choices:makeChoices(t.answer,t.wrongs)};},
+  "Central & Inscribed Angles":()=>{const arc=rInt(40,160);const inscribed=arc/2;const types=[{question:`An inscribed angle intercepts an arc of ${arc}°. What is the inscribed angle?`,answer:`${inscribed}°`,wrongs:[`${arc}°`,`${arc*2}°`,`${inscribed+10}°`],explanation:`Inscribed angle = ½ × intercepted arc = ½ × ${arc}° = ${inscribed}°.`},{question:`A central angle intercepts an arc of ${arc}°. What is the central angle?`,answer:`${arc}°`,wrongs:[`${arc/2}°`,`${arc*2}°`,`${arc-10}°`],explanation:`A central angle equals its intercepted arc = ${arc}°.`}];const t=rChoice(types);return{...t,choices:makeChoices(t.answer,t.wrongs)};},
+  "Slope Calculation":()=>{const x1=rInt(-5,5),y1=rInt(-5,5),x2=rInt(-5,5),y2=rInt(-5,5);if(x1===x2)return GENERATORS["Slope Calculation"]();const rise=y2-y1,run=x2-x1;const[n,d]=simplifyFrac(rise,run);const answer=d===1?`${n}`:`${n}/${d}`;return{question:`What is the slope of the line through (${x1}, ${y1}) and (${x2}, ${y2})?`,choices:makeChoices(answer,[`${n+1}`,`${-n}/${d}`,`${d}/${n}`]),answer,explanation:`m = (y₂−y₁)/(x₂−x₁) = (${y2}−${y1})/(${x2}−${x1}) = ${rise}/${run} = ${answer}.`};},
+  "Equation of a Line":()=>{const m=rInt(-4,4),b=rInt(-6,6);if(m===0)return GENERATORS["Equation of a Line"]();const mStr=m===1?"":m===-1?"-":`${m}`;const bStr=b>=0?`+ ${b}`:`− ${Math.abs(b)}`;const answer=`y = ${mStr}x ${bStr}`;return{question:`A line has slope ${m} and y-intercept ${b}. Which equation represents it?`,choices:makeChoices(answer,[`y = ${m+1}x ${bStr}`,`y = ${mStr}x + ${b+2}`,`y = ${-m}x ${bStr}`]),answer,explanation:`Slope-intercept: y = mx + b. With m=${m}, b=${b}: ${answer}.`};},
+  "Parallel & Perpendicular Lines":()=>{const m=rInt(-4,4);if(m===0)return GENERATORS["Parallel & Perpendicular Lines"]();const[n,d]=simplifyFrac(-1,m);const perpSlope=d===1?`${n}`:`${n}/${d}`;const type=rChoice(["parallel","perpendicular"]);const b2=rInt(-6,6);if(type==="parallel"){return{question:`Which line is parallel to y = ${m}x + ${rInt(-5,5)}?`,choices:makeChoices(`y = ${m}x + ${b2}`,[`y = ${n}/${d}x + ${b2}`,`y = ${m+1}x + ${b2}`,`y = ${-m}x + ${b2}`]),answer:`y = ${m}x + ${b2}`,explanation:`Parallel lines have the same slope (${m}).`};}else{return{question:`Which line is perpendicular to y = ${m}x + ${rInt(-5,5)}?`,choices:makeChoices(`y = ${perpSlope}x + ${b2}`,[`y = ${m}x + ${b2}`,`y = ${m+1}x + ${b2}`,`y = ${-m}x + ${b2}`]),answer:`y = ${perpSlope}x + ${b2}`,explanation:`Perpendicular slopes are negative reciprocals. Negative reciprocal of ${m} is ${perpSlope}.`};}},
+  "Rational and Irrational":()=>{const qs=[{question:"Which of the following is an irrational number?",choices:["√2","1/3","0.5","7"],answer:"√2",explanation:"√2 cannot be expressed as p/q for integers p, q. It is irrational."},{question:"The product of a nonzero rational and an irrational number is always:",choices:["Irrational","Rational","An integer","Zero"],answer:"Irrational",explanation:"A nonzero rational × irrational always produces an irrational number."},{question:"Which of the following is a rational number?",choices:["4/7","√3","π","√5"],answer:"4/7",explanation:"4/7 can be expressed as a fraction of two integers, so it is rational."}];return rChoice(qs);},
+  "Multiples":()=>{const a=rInt(2,9),b=rInt(2,9);const lcm=a*b/gcd(a,b);const wrongs=[lcm+a,lcm-b,a*b].filter(w=>w!==lcm);return{question:`What is the LCM of ${a} and ${b}?`,choices:makeChoices(lcm,wrongs),answer:lcm,explanation:`GCD(${a},${b})=${gcd(a,b)}. LCM=(${a}×${b})/${gcd(a,b)}=${lcm}.`};},
+  "Factors":()=>{const a=rInt(12,48),b=rInt(12,48);const g=gcd(a,b);const wrongs=[g+1,g-1,g*2].filter(w=>w!==g&&w>0);return{question:`What is the GCF of ${a} and ${b}?`,choices:makeChoices(g,wrongs),answer:g,explanation:`The greatest common factor of ${a} and ${b} is ${g}.`};},
+  "Divisibility Rules":()=>{return rChoice([{question:"Which number is divisible by 3?",choices:["123","124","125","127"],answer:"123",explanation:"Digit sum of 123 is 1+2+3=6, divisible by 3."},{question:"Which is divisible by 9?",choices:["729","730","728","731"],answer:"729",explanation:"Digit sum of 729 is 7+2+9=18, divisible by 9."},{question:"A number ends in 0 or 5. It must be divisible by:",choices:["5","3","9","7"],answer:"5",explanation:"Numbers ending in 0 or 5 are divisible by 5."}]);},
+  "Integer Properties":()=>{return rChoice([{question:"The sum of two odd integers is always:",choices:["Even","Odd","Could be either","Zero"],answer:"Even",explanation:"Odd + Odd = Even. Example: 3 + 5 = 8."},{question:"The product of two even integers is always:",choices:["Even","Odd","Could be either","Prime"],answer:"Even",explanation:"Even × Even = Even. Example: 4 × 6 = 24."},{question:"The product of an odd and an even integer is always:",choices:["Even","Odd","Could be either","Zero"],answer:"Even",explanation:"Odd × Even = Even. Example: 3 × 4 = 12."}]);},
+  "FOIL":()=>{const a=rInt(1,5),b=rInt(1,6),c=rInt(1,5),d=rInt(1,6);const first=a*c,outer=a*d,inner=b*c,last=b*d;const mid=outer+inner;const answer=`${first}x² + ${mid}x + ${last}`;return{question:`Expand: (${a}x + ${b})(${c}x + ${d})`,choices:makeChoices(answer,[`${first}x² + ${mid+1}x + ${last}`,`${first+1}x² + ${mid}x + ${last}`,`${first}x² + ${mid}x + ${last+1}`]),answer,explanation:`FOIL: First=${a}×${c}=${first}, Outer=${a}×${d}=${outer}, Inner=${b}×${c}=${inner}, Last=${b}×${d}=${last}. Result: ${answer}.`};},
+  "Polynomial Arithmetic":()=>{const a1=rInt(1,5),b1=rInt(1,8),a2=rInt(1,5),b2=rInt(1,8);const type=rChoice(["add","subtract"]);const ra=type==="add"?a1+a2:a1-a2;const rb=type==="add"?b1+b2:b1-b2;const op=type==="add"?"+":"−";const answer=`${ra}x + ${rb}`;return{question:`Simplify: (${a1}x + ${b1}) ${op} (${a2}x + ${b2})`,choices:makeChoices(answer,[`${ra+1}x + ${rb}`,`${ra}x + ${rb+1}`,`${ra-1}x + ${rb-1}`]),answer,explanation:`Combine like terms: (${a1} ${op} ${a2})x + (${b1} ${op} ${b2}) = ${ra}x + ${rb}.`};},
+  "Special Binomial Expansion":()=>{const a=rInt(2,6),b=rInt(1,5);const type=rChoice(["plus","minus"]);if(type==="plus"){const answer=`${a*a}x² + ${2*a*b}x + ${b*b}`;return{question:`Expand: (${a}x + ${b})²`,choices:makeChoices(answer,[`${a*a}x² + ${a*b}x + ${b*b}`,`${a*a}x² + ${2*a*b}x + ${b}`,`${a}x² + ${2*a*b}x + ${b*b}`]),answer,explanation:`(a+b)² = a²+2ab+b². (${a}x)²+2(${a}x)(${b})+${b}² = ${a*a}x²+${2*a*b}x+${b*b}.`};}else{const answer=`${a*a}x² − ${2*a*b}x + ${b*b}`;return{question:`Expand: (${a}x − ${b})²`,choices:makeChoices(answer,[`${a*a}x² + ${2*a*b}x + ${b*b}`,`${a*a}x² − ${a*b}x + ${b*b}`,`${a*a}x² − ${2*a*b}x − ${b*b}`]),answer,explanation:`(a−b)² = a²−2ab+b². (${a}x)²−2(${a}x)(${b})+${b}² = ${a*a}x²−${2*a*b}x+${b*b}.`};}},
+  "SOHCAHTOA":()=>{const angles=[30,45,60];const angle=rChoice(angles);const ratios={30:{sin:"1/2",cos:"√3/2",tan:"1/√3"},45:{sin:"√2/2",cos:"√2/2",tan:"1"},60:{sin:"√3/2",cos:"1/2",tan:"√3"}};const fn=rChoice(["sin","cos","tan"]);const answer=ratios[angle][fn];const allVals=Object.values(ratios[angle]);const wrongs=allVals.filter(v=>v!==answer);return{question:`What is ${fn}(${angle}°)?`,choices:makeChoices(answer,wrongs.concat(["0","2"])),answer,explanation:`${fn}(${angle}°) = ${answer}. Remember SOH-CAH-TOA and the special triangles (30-60-90, 45-45-90).`};},
+  "Complex & Imaginary Numbers":()=>{const a=rInt(1,5),b=rInt(1,5),c=rInt(1,5),d=rInt(1,5);const types=[{question:`Simplify: (${a} + ${b}i) + (${c} + ${d}i)`,answer:`${a+c} + ${b+d}i`,wrongs:[`${a+c} + ${b-d}i`,`${a-c} + ${b+d}i`,`${a*c} + ${b*d}i`],explanation:`Add real and imaginary parts: (${a}+${c}) + (${b}+${d})i = ${a+c} + ${b+d}i.`},{question:`What is i²?`,answer:"-1",wrongs:["1","i","-i"],explanation:`By definition, i = √(−1), so i² = −1.`},{question:`Simplify: (${a} + ${b}i)(${c} + ${d}i)`,answer:`${a*c-b*d} + ${a*d+b*c}i`,wrongs:[`${a*c+b*d} + ${a*d+b*c}i`,`${a*c} + ${b*d}i`,`${a*c-b*d} + ${a*d-b*c}i`],explanation:`FOIL: ${a}×${c} + ${a}×${d}i + ${b}i×${c} + ${b}i×${d}i = ${a*c}+${a*d}i+${b*c}i+${b*d}i². Since i²=−1: (${a*c}−${b*d}) + (${a*d}+${b*c})i = ${a*c-b*d} + ${a*d+b*c}i.`}];const t=rChoice(types);return{...t,choices:makeChoices(t.answer,t.wrongs)};},
+  "(x,y) Coordinate Plane":()=>{const x1=rInt(-5,5),y1=rInt(-5,5),x2=rInt(-5,5),y2=rInt(-5,5);const mid=[Math.round((x1+x2)/2*10)/10,Math.round((y1+y2)/2*10)/10];const answer=`(${mid[0]}, ${mid[1]})`;const wrongs=[`(${x1}, ${y1})`,`(${x2}, ${y2})`,`(${mid[0]+1}, ${mid[1]})`];return{question:`What is the midpoint of the segment with endpoints (${x1}, ${y1}) and (${x2}, ${y2})?`,choices:makeChoices(answer,wrongs),answer,explanation:`Midpoint = ((x₁+x₂)/2, (y₁+y₂)/2) = ((${x1}+${x2})/2, (${y1}+${y2})/2) = ${answer}.`};},
+  "Distance Formula":()=>{const x1=rInt(-4,4),y1=rInt(-4,4),x2=rInt(-4,4),y2=rInt(-4,4);const dx=x2-x1,dy=y2-y1;const dist=Math.round(Math.sqrt(dx*dx+dy*dy)*100)/100;return{question:`What is the distance between (${x1}, ${y1}) and (${x2}, ${y2})?`,choices:makeChoices(dist,[Math.round((dist+1)*100)/100,Math.round((dist-1)*100)/100,Math.round((dist+2)*100)/100]),answer:dist,explanation:`d = √((${x2}−${x1})²+(${y2}−${y1})²) = √(${dx*dx}+${dy*dy}) = √${dx*dx+dy*dy} ≈ ${dist}.`};},
+  "Unit Conversion":()=>{const conversions=[{q:`Convert 3 hours to minutes.`,a:180,w:[30,360,3600],exp:`1 hour = 60 minutes. 3 × 60 = 180 minutes.`},{q:`Convert 5 feet to inches.`,a:60,w:[50,12,5*12+5],exp:`1 foot = 12 inches. 5 × 12 = 60 inches.`},{q:`Convert 2.5 kilometers to meters.`,a:2500,w:[25,250,25000],exp:`1 km = 1000 m. 2.5 × 1000 = 2500 m.`},{q:`Convert 72 inches to feet.`,a:6,w:[72,8,864],exp:`1 foot = 12 inches. 72 ÷ 12 = 6 feet.`}];const t=rChoice(conversions);return{question:t.q,choices:makeChoices(t.a,t.w),answer:t.a,explanation:t.exp};},
+  "Ratios":()=>{const a=rInt(2,8),b=rInt(2,8),total=rInt(20,50);const partA=Math.round((a/(a+b))*total);const answer=partA;return{question:`Two groups have a ratio of ${a}:${b}. If the total is ${total}, how many are in the first group?`,choices:makeChoices(answer,[answer+2,answer-2,Math.round((b/(a+b))*total)]),answer,explanation:`First group = (${a}/${a+b}) × ${total} = ${answer}.`};},
+  "Sequence Notation":()=>{const a1=rInt(2,10),d=rInt(2,6),n=rInt(5,10);const an=a1+(n-1)*d;return{question:`In an arithmetic sequence, a₁ = ${a1} and d = ${d}. What is a₍${n}₎?`,choices:makeChoices(an,[an+d,an-d,a1+n*d]),answer:an,explanation:`aₙ = a₁+(n−1)d = ${a1}+(${n}−1)(${d}) = ${a1}+${(n-1)*d} = ${an}.`};},
+  "Arithmetic Sequence (Sum)":()=>{const a1=rInt(2,8),d=rInt(2,5),n=rInt(5,10);const an=a1+(n-1)*d;const sum=(n/2)*(a1+an);return{question:`Find the sum of the first ${n} terms: a₁ = ${a1}, d = ${d}.`,choices:makeChoices(sum,[sum+n,sum-n,sum+d*n]),answer:sum,explanation:`aₙ = ${an}. Sum = (n/2)(a₁+aₙ) = (${n}/2)(${a1}+${an}) = ${sum}.`};},
+  "Arithmetic Sequence (Nth Term)":()=>{const a1=rInt(2,10),d=rInt(2,8),target=rInt(3,8);const an=a1+(target-1)*d;return{question:`An arithmetic sequence starts at ${a1} with common difference ${d}. What is the ${target}${["st","nd","rd"][target-1]||"th"} term?`,choices:makeChoices(an,[an+d,an-d,a1+target*d]),answer:an,explanation:`a₍${target}₎ = a₁+(${target}−1)d = ${a1}+${target-1}×${d} = ${an}.`};},
+  "Area":()=>{const shapes=[()=>{const b=rInt(4,15),h=rInt(4,15);return{question:`Area of a triangle with base ${b} and height ${h}?`,answer:b*h/2,wrongs:[b*h,b*h/2+1,(b+1)*h/2],explanation:`Area = (1/2)bh = (1/2)(${b})(${h}) = ${b*h/2}.`};},()=>{const l=rInt(4,15),w=rInt(3,12);return{question:`Area of a rectangle with length ${l} and width ${w}?`,answer:l*w,wrongs:[2*(l+w),l*w+l,l*w-w],explanation:`Area = lw = ${l}×${w} = ${l*w}.`};},()=>{const r=rInt(3,10);const a=Math.round(Math.PI*r*r*100)/100;return{question:`Area of a circle with radius ${r}? (π ≈ 3.14159)`,answer:a,wrongs:[Math.round(2*Math.PI*r*100)/100,Math.round(a*1.1*100)/100,Math.round(a*0.9*100)/100],explanation:`Area = πr² = π(${r})² ≈ ${a}.`};},()=>{const a=rInt(4,10),b=rInt(6,14),h=rInt(3,8);const area=(a+b)/2*h;return{question:`Area of a trapezoid with parallel sides ${a} and ${b}, height ${h}?`,answer:area,wrongs:[area+h,area-h,(a+b)*h],explanation:`Area = ((a+b)/2)h = ((${a}+${b})/2)(${h}) = ${area}.`};}];const t=rChoice(shapes)();return{...t,choices:makeChoices(t.answer,t.wrongs.filter(w=>w!==t.answer))};},
+  "The Unit Circle & Radians":()=>{const conversions=[{deg:30,rad:"π/6"},{deg:45,rad:"π/4"},{deg:60,rad:"π/3"},{deg:90,rad:"π/2"},{deg:180,rad:"π"},{deg:270,rad:"3π/2"}];const type=rChoice(["toRad","toDeg"]);const chosen=rChoice(conversions);if(type==="toRad"){return{question:`Convert ${chosen.deg}° to radians.`,choices:makeChoices(chosen.rad,conversions.filter(c=>c.rad!==chosen.rad).slice(0,3).map(c=>c.rad)),answer:chosen.rad,explanation:`Radians = degrees × π/180 = ${chosen.deg} × π/180 = ${chosen.rad}.`};}else{return{question:`Convert ${chosen.rad} radians to degrees.`,choices:makeChoices(`${chosen.deg}°`,conversions.filter(c=>c.deg!==chosen.deg).slice(0,3).map(c=>`${c.deg}°`)),answer:`${chosen.deg}°`,explanation:`Degrees = radians × 180/π = ${chosen.rad} × 180/π = ${chosen.deg}°.`};}},
+  "Trig Graph Vocabulary":()=>{const A=rInt(2,5),B=rInt(2,4),D=rInt(1,4);const qs=[{question:`What is the amplitude of y = ${A}sin(${B}x) + ${D}?`,answer:`${A}`,wrongs:[`${A*2}`,`${D}`,`${B}`],explanation:`Amplitude = |A| = ${A}.`},{question:`What is the period of y = ${A}sin(${B}x) + ${D}?`,answer:`2π/${B}`,wrongs:["2π",`π/${B}`,`${B}π`],explanation:`Period = 2π/B = 2π/${B}.`},{question:`What is the vertical shift of y = ${A}sin(${B}x) + ${D}?`,answer:`${D} units up`,wrongs:[`${D} units down`,`${A} units up`,`${B} units up`],explanation:`The vertical shift is D = ${D}, so the graph shifts ${D} units up.`}];const t=rChoice(qs);return{...t,choices:makeChoices(t.answer,t.wrongs)};},
+  "Trig Identities":()=>{const angle=rInt(10,80);const qs=[{question:`If sin(θ) = 3/5, what is cos²(θ)?`,answer:"16/25",wrongs:["9/25","1/25","7/25"],explanation:`sin²(θ)+cos²(θ)=1. cos²(θ)=1−(3/5)²=1−9/25=16/25.`},{question:`Which of the following equals sin(90° − ${angle}°)?`,answer:`cos(${angle}°)`,wrongs:[`sin(${angle}°)`,`tan(${angle}°)`,`−cos(${angle}°)`],explanation:`Cofunction identity: sin(90°−x)=cos(x). So sin(90°−${angle}°)=cos(${angle}°).`},{question:`sin²(θ) + cos²(θ) = ?`,answer:"1",wrongs:["0","sin(θ)","2"],explanation:`Pythagorean identity: sin²(θ)+cos²(θ)=1.`}];const t=rChoice(qs);return{...t,choices:makeChoices(t.answer,t.wrongs)};}
+};
+
+const SKILL_TO_TOPIC = {};
+Object.entries(TOPICS).forEach(([topicId,topic])=>{topic.skills.forEach(skill=>{SKILL_TO_TOPIC[skill]=topicId;});});
+
+function generateQuestion(topicId, skillOverride) {
+  const topic = TOPICS[topicId];
+  if (!topic) return null;
+  const skill = skillOverride || rChoice(topic.skills);
+  const generator = GENERATORS[skill];
+  if (!generator) return null;
+  try {
+    const q = generator();
+    return { ...q, topic: topicId, skill, topicLabel: topic.label, id: Date.now()+Math.random() };
+  } catch(e) {
+    return generateQuestion(topicId, skillOverride);
+  }
+}
+
+function getAdaptiveQuestion(stats, tFilter, sFilter) {
+  const allTopics = Object.keys(TOPICS);
+  if (sFilter) { const tid = SKILL_TO_TOPIC[sFilter]; return tid ? generateQuestion(tid, sFilter) : null; }
+  if (tFilter) return generateQuestion(tFilter);
+  const weights = allTopics.map(tid => {
+    const s = stats[tid] || {correct:0,total:0};
+    const incorrect = s.total - s.correct;
+    const pct = s.total > 0 ? s.correct/s.total : 0.5;
+    return Math.max(1, 10 - Math.floor(pct*8) + incorrect*2);
+  });
+  const totalWeight = weights.reduce((a,b)=>a+b,0);
+  let rand = Math.random() * totalWeight;
+  for (let i = 0; i < allTopics.length; i++) { rand -= weights[i]; if (rand <= 0) return generateQuestion(allTopics[i]); }
+  return generateQuestion(rChoice(allTopics));
+}
+
+// ============================================================
+// PROGRESS & STORAGE
+// ============================================================
+const STORAGE_KEY = "act_math_progress_v1";
+
+function loadProgress() {
+  try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : defaultProgress(); }
+  catch(e) { return defaultProgress(); }
+}
+function defaultProgress() { return { sessions: [], topicStats: {}, lastUpdated: null }; }
+function saveProgress(progress) {
+  try { progress.lastUpdated = new Date().toISOString(); localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); }
+  catch(e) { console.error("Save failed:", e); }
+}
+function getTodayKey() { return new Date().toISOString().split("T")[0]; }
+
+function recordAnswer(progress, topicId, skill, isCorrect) {
+  const todayKey = getTodayKey();
+  let session = progress.sessions.find(s => s.date === todayKey);
+  if (!session) { session = {date:todayKey,correct:0,total:0,topicBreakdown:{}}; progress.sessions.push(session); }
+  session.total++; if(isCorrect) session.correct++;
+  if (!session.topicBreakdown[topicId]) session.topicBreakdown[topicId]={correct:0,total:0};
+  session.topicBreakdown[topicId].total++; if(isCorrect) session.topicBreakdown[topicId].correct++;
+  if (!progress.topicStats[topicId]) progress.topicStats[topicId]={correct:0,total:0,skillStats:{}};
+  progress.topicStats[topicId].total++; if(isCorrect) progress.topicStats[topicId].correct++;
+  if (!progress.topicStats[topicId].skillStats[skill]) progress.topicStats[topicId].skillStats[skill]={correct:0,total:0};
+  progress.topicStats[topicId].skillStats[skill].total++; if(isCorrect) progress.topicStats[topicId].skillStats[skill].correct++;
+  saveProgress(progress);
+  return progress;
+}
+
+function getTopicsSortedByDifficulty(progress, ascending=true) {
+  return Object.keys(TOPICS).map(tid => {
+    const s = progress.topicStats[tid] || {correct:0,total:0};
+    const pct = s.total > 0 ? s.correct/s.total : 0.5;
+    return {topicId:tid, pct, total:s.total, correct:s.correct};
+  }).filter(t=>t.total>0).sort((a,b)=>ascending?a.pct-b.pct:b.pct-a.pct);
+}
+
+function getAllTimeStats(progress) {
+  const total = progress.sessions.reduce((s,d)=>s+d.total,0);
+  const correct = progress.sessions.reduce((s,d)=>s+d.correct,0);
+  return {total, correct, pct: total>0 ? Math.round(correct/total*100) : 0};
+}
+
+// ============================================================
+// APP STATE
+// ============================================================
+let progress = loadProgress();
+let currentQ = null;
+let sessionCorrect = 0, sessionTotal = 0, questionNumber = 0;
+let answered = false;
+let reviewMode = "all";
+let topicFilter = null, skillFilter = null;
+let timerInterval = null, timerSeconds = 0, timerRunning = false;
+let chartModeMain = "count";
+let chartModeTopic = "count";
+let currentTopicDetailId = null;
+
+const PAGES = ["home","progress","review-mode","practice","topic-detail"];
+
+function showPage(id) {
+  PAGES.forEach(p => { const el = document.getElementById("page-"+p); if(el) el.classList.remove("active"); });
+  const el = document.getElementById("page-"+id);
+  if (el) { el.classList.add("active"); window.scrollTo(0,0); }
+}
+
+// ---- HOME ----
+function goHome() {
+  stopTimer();
+  topicFilter = null; skillFilter = null; reviewMode = "all";
+  showPage("home");
+}
+
+// ---- PROGRESS PAGE ----
+function showProgress() {
+  showPage("progress");
+  progress = loadProgress();
+  renderProgressPage();
+}
+
+function renderProgressPage() {
+  const all = getAllTimeStats(progress);
+  document.getElementById("stat-total").textContent = all.total;
+  document.getElementById("stat-correct").textContent = all.correct;
+  document.getElementById("stat-pct").textContent = all.pct + "%";
+  setTimeout(()=>{ drawMainChart(); renderTopicBreakdown(); }, 30);
+}
+
+function drawChart(canvasId, sessions, mode) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = canvas.offsetWidth * dpr;
+  canvas.height = canvas.offsetHeight * dpr;
+  const ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  ctx.clearRect(0,0,W,H);
+
+  if (sessions.length === 0) {
+    ctx.fillStyle = "#7A7570"; ctx.font = "14px DM Sans, sans-serif";
+    ctx.textAlign = "center"; ctx.fillText("No data yet — start practicing!", W/2, H/2);
+    return;
+  }
+
+  const pad = {top:24, right:24, bottom:48, left:52};
+  const cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+
+  const vals = sessions.map(s => mode === "count" ? s.correct : (s.total > 0 ? Math.round(s.correct/s.total*100) : 0));
+  const totals = sessions.map(s => s.total);
+  const maxVal = Math.max(...vals, mode === "percent" ? 100 : 10);
+
+  // Grid lines + Y labels
+  ctx.strokeStyle = "#EDEAE3"; ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.top + cH - (i/4)*cH;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    ctx.fillStyle="#7A7570"; ctx.font="11px JetBrains Mono,monospace"; ctx.textAlign="right";
+    ctx.fillText(Math.round(maxVal*i/4)+(mode==="percent"?"%":""), pad.left-6, y+4);
+  }
+
+  // X labels
+  sessions.forEach((s,i) => {
+    const x = pad.left+(sessions.length===1?cW/2:(i/(sessions.length-1))*cW);
+    ctx.fillStyle="#7A7570"; ctx.font="10px DM Sans,sans-serif"; ctx.textAlign="center";
+    ctx.fillText(s.date.slice(5), x, H-pad.bottom+16);
+  });
+
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0,pad.top,0,pad.top+cH);
+  grad.addColorStop(0,"rgba(200,75,49,0.18)"); grad.addColorStop(1,"rgba(200,75,49,0.01)");
+  ctx.beginPath();
+  vals.forEach((v,i) => {
+    const x=pad.left+(sessions.length===1?cW/2:(i/(sessions.length-1))*cW);
+    const y=pad.top+cH-(v/maxVal)*cH;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.lineTo(pad.left+(sessions.length===1?cW/2:cW), pad.top+cH);
+  ctx.lineTo(pad.left, pad.top+cH);
+  ctx.closePath(); ctx.fillStyle=grad; ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  vals.forEach((v,i) => {
+    const x=pad.left+(sessions.length===1?cW/2:(i/(sessions.length-1))*cW);
+    const y=pad.top+cH-(v/maxVal)*cH;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle="#C84B31"; ctx.lineWidth=2.5; ctx.lineJoin="round"; ctx.stroke();
+
+  // Dots + tooltip labels
+  vals.forEach((v,i) => {
+    const x=pad.left+(sessions.length===1?cW/2:(i/(sessions.length-1))*cW);
+    const y=pad.top+cH-(v/maxVal)*cH;
+    ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2);
+    ctx.fillStyle="#C84B31"; ctx.fill(); ctx.strokeStyle="white"; ctx.lineWidth=2; ctx.stroke();
+    const label = mode==="count" ? `${v}/${totals[i]}` : `${v}%`;
+    ctx.fillStyle="#1A1814"; ctx.font="bold 11px DM Sans,sans-serif"; ctx.textAlign="center";
+    ctx.fillText(label, x, y-11);
+  });
+}
+
+function drawMainChart() {
+  const sessions = [...progress.sessions].sort((a,b)=>a.date.localeCompare(b.date));
+  drawChart("progress-chart", sessions, chartModeMain);
+}
+
+function drawTopicChartForDetail(topicId) {
+  const sessions = [...progress.sessions]
+    .sort((a,b)=>a.date.localeCompare(b.date))
+    .filter(s=>s.topicBreakdown&&s.topicBreakdown[topicId])
+    .map(s => ({date:s.date, correct:s.topicBreakdown[topicId].correct, total:s.topicBreakdown[topicId].total}));
+  drawChart("topic-chart", sessions, chartModeTopic);
+}
+
+function setChartMode(mode, which) {
+  if (which === "main") {
+    chartModeMain = mode;
+    document.querySelectorAll("[data-chart='main'].toggle-btn").forEach(b=>b.classList.toggle("active", b.dataset.mode===mode));
+    drawMainChart();
+  } else {
+    chartModeTopic = mode;
+    document.querySelectorAll("[data-chart='topic'].toggle-btn").forEach(b=>b.classList.toggle("active", b.dataset.mode===mode));
+    if (currentTopicDetailId) drawTopicChartForDetail(currentTopicDetailId);
+  }
+}
+
+function renderTopicBreakdown() {
+  const container = document.getElementById("topic-breakdown-list");
+  container.innerHTML = "";
+  const topicIds = Object.keys(TOPICS);
+  if (topicIds.every(tid => !(progress.topicStats[tid]?.total > 0))) {
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">📊</span><p>No data yet. Start practicing to see your topic breakdown!</p></div>`;
+    return;
+  }
+  topicIds.forEach(topicId => {
+    const topic = TOPICS[topicId];
+    const s = progress.topicStats[topicId] || {correct:0,total:0};
+    const pct = s.total > 0 ? Math.round(s.correct/s.total*100) : null;
+    const pctFill = pct !== null ? pct : 0;
+    const row = document.createElement("div");
+    row.className = "topic-row";
+    row.innerHTML = `
+      <div class="topic-row-name">${topic.label}</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill ${pctFill<50?'low':pctFill<75?'mid':''}" style="width:${pctFill}%"></div></div>
+      <div class="topic-row-stats">${s.total>0?`${s.correct}/${s.total}<br><span style="font-size:0.78rem">${pct}%</span>`:'<span style="color:#bbb">No data</span>'}</div>
+    `;
+    row.onclick = () => showTopicDetail(topicId);
+    container.appendChild(row);
+  });
+}
+
+// ---- TOPIC DETAIL ----
+function showTopicDetail(topicId) {
+  currentTopicDetailId = topicId;
+  chartModeTopic = "count";
+  const topic = TOPICS[topicId];
+  document.getElementById("topic-detail-title").textContent = topic.label;
+  const s = progress.topicStats[topicId] || {correct:0,total:0,skillStats:{}};
+  document.getElementById("topic-detail-overall").textContent =
+    s.total > 0 ? `${s.correct}/${s.total} (${Math.round(s.correct/s.total*100)}%)` : "No attempts yet";
+  showPage("topic-detail");
+  // Reset toggle buttons
+  document.querySelectorAll("[data-chart='topic'].toggle-btn").forEach(b=>b.classList.toggle("active", b.dataset.mode==="count"));
+  // Render skill list
+  const skillList = document.getElementById("topic-skill-list");
+  skillList.innerHTML = "";
+  topic.skills.forEach(skill => {
+    const ss = (s.skillStats||{})[skill]||{correct:0,total:0};
+    const pctFill = ss.total > 0 ? Math.round(ss.correct/ss.total*100) : 0;
+    const div = document.createElement("div");
+    div.className = "topic-row"; div.style.cursor="default";
+    div.innerHTML = `
+      <div style="font-size:0.88rem;font-weight:500">${skill}</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill ${ss.total>0&&ss.correct/ss.total<0.5?'low':ss.total>0&&ss.correct/ss.total<0.75?'mid':''}" style="width:${pctFill}%"></div></div>
+      <div class="topic-row-stats" style="font-size:0.82rem">${ss.total>0?`${ss.correct}/${ss.total}<br><span style="font-size:0.75rem">${pctFill}%</span>`:"—"}</div>
+    `;
+    skillList.appendChild(div);
+  });
+  setTimeout(() => drawTopicChartForDetail(topicId), 50);
+}
+
+// ---- REVIEW MODE ----
+function showReviewMode() {
+  showPage("review-mode");
+  renderReviewTopicChips();
+  // Reset mode cards
+  document.querySelectorAll(".mode-card").forEach(c=>c.classList.remove("selected"));
+  const sel = document.querySelector(`[data-mode="${reviewMode||'all'}"]`);
+  if (sel) sel.classList.add("selected");
+}
+
+function renderReviewTopicChips() {
+  const container = document.getElementById("review-topic-chips");
+  container.innerHTML = "";
+  const all = document.createElement("span");
+  all.className = "topic-chip" + (!topicFilter?" active":"");
+  all.textContent = "All Topics"; all.dataset.topic = "";
+  all.onclick = () => selectTopicChip(all, "");
+  container.appendChild(all);
+  Object.entries(TOPICS).forEach(([id,t]) => {
+    const chip = document.createElement("span");
+    chip.className = "topic-chip" + (topicFilter===id?" active":"");
+    chip.textContent = t.label; chip.dataset.topic = id;
+    chip.onclick = () => selectTopicChip(chip, id);
+    container.appendChild(chip);
+  });
+  document.getElementById("review-skill-chips").innerHTML = "";
+  if (topicFilter && TOPICS[topicFilter]) {
+    TOPICS[topicFilter].skills.forEach(skill => {
+      const chip = document.createElement("span");
+      chip.className = "skill-chip" + (skillFilter===skill?" active":"");
+      chip.textContent = skill;
+      chip.onclick = () => selectSkillChip(chip, skill);
+      document.getElementById("review-skill-chips").appendChild(chip);
+    });
+  }
+}
+
+function selectTopicChip(el, topicId) {
+  document.querySelectorAll("#review-topic-chips .topic-chip").forEach(c=>c.classList.remove("active"));
+  el.classList.add("active");
+  topicFilter = topicId || null; skillFilter = null;
+  const skillContainer = document.getElementById("review-skill-chips");
+  skillContainer.innerHTML = "";
+  if (topicId && TOPICS[topicId]) {
+    TOPICS[topicId].skills.forEach(skill => {
+      const chip = document.createElement("span");
+      chip.className = "skill-chip"; chip.textContent = skill;
+      chip.onclick = () => selectSkillChip(chip, skill);
+      skillContainer.appendChild(chip);
+    });
+  }
+}
+
+function selectSkillChip(el, skill) {
+  document.querySelectorAll("#review-skill-chips .skill-chip").forEach(c=>c.classList.remove("active"));
+  el.classList.add("active"); skillFilter = skill;
+}
+
+function selectMode(mode) {
+  reviewMode = mode;
+  document.querySelectorAll(".mode-card").forEach(c=>c.classList.remove("selected"));
+  document.querySelector(`[data-mode="${mode}"]`).classList.add("selected");
+}
+
+// ---- PRACTICE ----
+function startPractice() {
+  if (!reviewMode) reviewMode = "all";
+  sessionCorrect = 0; sessionTotal = 0; questionNumber = 0;
+  showPage("practice");
+  loadNextQuestion();
+}
+
+function loadNextQuestion() {
+  stopTimer();
+  answered = false;
+  questionNumber++;
+  updateSessionBar();
+  let q;
+  if (skillFilter) {
+    const tid = SKILL_TO_TOPIC[skillFilter];
+    q = tid ? generateQuestion(tid, skillFilter) : null;
+  } else if (topicFilter) {
+    q = generateQuestion(topicFilter);
+  } else if (reviewMode === "problem-areas") {
+    const hard = getTopicsSortedByDifficulty(progress, true);
+    q = hard.length > 0 ? generateQuestion(hard[Math.floor(Math.random()*Math.min(5,hard.length))].topicId) : getAdaptiveQuestion(progress.topicStats||{},null,null);
+  } else if (reviewMode === "easy-wins") {
+    const easy = getTopicsSortedByDifficulty(progress, false);
+    q = easy.length > 0 ? generateQuestion(easy[Math.floor(Math.random()*Math.min(5,easy.length))].topicId) : getAdaptiveQuestion(progress.topicStats||{},null,null);
+  } else {
+    const roll = Math.random();
+    if (roll < 0.25 && getTopicsSortedByDifficulty(progress,false).length > 0) {
+      const easy = getTopicsSortedByDifficulty(progress,false);
+      q = generateQuestion(easy[Math.floor(Math.random()*Math.min(3,easy.length))].topicId);
+    } else {
+      q = getAdaptiveQuestion(progress.topicStats||{},null,null);
+    }
+  }
+  if (!q) q = getAdaptiveQuestion(progress.topicStats||{},null,null);
+  currentQ = q;
+  renderQuestion(q);
+}
+
+function renderQuestion(q) {
+  document.getElementById("q-number").textContent = `Q${questionNumber}`;
+  document.getElementById("q-topic-badge").textContent = q.topicLabel + " · " + q.skill;
+  document.getElementById("q-text").textContent = q.question;
+  const letters = ["A","B","C","D"];
+  const grid = document.getElementById("choices-grid");
+  grid.innerHTML = "";
+  q.choices.forEach((choice,i) => {
+    const btn = document.createElement("button");
+    btn.className = "choice-btn";
+    btn.innerHTML = `<span class="choice-letter">${letters[i]}</span><span>${choice}</span>`;
+    btn.onclick = () => selectAnswer(btn, choice);
+    grid.appendChild(btn);
+  });
+  document.getElementById("feedback-box").innerHTML = "";
+  document.getElementById("next-btn").style.display = "none";
+  document.getElementById("timer-display").textContent = "0:00";
+  timerSeconds = 0;
+}
+
+function selectAnswer(btn, choice) {
+  if (answered) return;
+  answered = true;
+  stopTimer();
+  const isCorrect = String(choice) === String(currentQ.answer);
+  sessionTotal++; if(isCorrect) sessionCorrect++;
+  progress = recordAnswer(progress, currentQ.topic, currentQ.skill, isCorrect);
+  updateSessionBar();
+  document.querySelectorAll(".choice-btn").forEach(b => {
+    b.disabled = true;
+    const label = b.querySelector("span:last-child").textContent;
+    if (String(label) === String(currentQ.answer)) b.classList.add("correct");
+    else if (b === btn && !isCorrect) b.classList.add("wrong");
+  });
+  const fb = document.getElementById("feedback-box");
+  fb.className = "feedback-box " + (isCorrect ? "correct-fb" : "wrong-fb");
+  fb.innerHTML = `
+    <h3>${isCorrect ? "✓ That's correct!" : "✗ Not quite…"}</h3>
+    <p class="explanation"><strong>Step-by-step:</strong> ${currentQ.explanation}</p>
+    ${!isCorrect ? `<p style="margin-top:8px;font-size:0.88rem;color:#7A7570">Correct answer: <strong>${currentQ.answer}</strong></p>` : ""}
+  `;
+  document.getElementById("next-btn").style.display = "inline-flex";
+  fb.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+function updateSessionBar() {
+  document.getElementById("session-score").textContent = `${sessionCorrect}/${sessionTotal} correct`;
+}
+
+// ---- TIMER ----
+function toggleTimer() {
+  if (timerRunning) {
+    stopTimer();
+    document.getElementById("btn-timer").classList.remove("running");
+    document.getElementById("btn-timer").textContent = "▶ Time Me";
+  } else {
+    timerRunning = true;
+    document.getElementById("btn-timer").classList.add("running");
+    document.getElementById("btn-timer").textContent = "⏹ Stop";
+    timerInterval = setInterval(() => {
+      timerSeconds++;
+      const m = Math.floor(timerSeconds/60), s = timerSeconds%60;
+      document.getElementById("timer-display").textContent = `${m}:${s.toString().padStart(2,"0")}`;
+    }, 1000);
+  }
+}
+
+function stopTimer() {
+  timerRunning = false;
+  clearInterval(timerInterval); timerInterval = null;
+  const btn = document.getElementById("btn-timer");
+  if (btn) { btn.classList.remove("running"); btn.textContent = "▶ Time Me"; }
+}
+
+// ---- INIT ----
+window.addEventListener("DOMContentLoaded", () => {
+  showPage("home");
+  window.addEventListener("resize", () => {
+    if (document.getElementById("page-progress").classList.contains("active")) drawMainChart();
+    if (document.getElementById("page-topic-detail").classList.contains("active") && currentTopicDetailId) drawTopicChartForDetail(currentTopicDetailId);
+  });
+});
+</script>
+</body>
+</html>

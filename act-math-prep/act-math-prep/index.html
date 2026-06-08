@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACT Math Prep</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- ================================================================
+     PAGE: HOME
+     ================================================================ -->
+<div id="page-home" class="page active">
+  <div class="page-inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;">
+    <div class="home-hero">
+      <h1>ACT Math<br/><em>Prep</em></h1>
+      <p>Adaptive practice for all 20 ACT Math topics. Every problem is unique. Every session gets smarter.</p>
+    </div>
+    <div class="home-cards">
+      <div class="home-card" onclick="showProgress()">
+        <span class="card-icon">📈</span>
+        <h2>See My Progress</h2>
+        <p>View your performance over time with charts and topic breakdowns.</p>
+      </div>
+      <div class="home-card" onclick="showReviewMode()">
+        <span class="card-icon">✏️</span>
+        <h2>Review</h2>
+        <p>Practice problems — adaptive to your strengths and weaknesses.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAGE: PROGRESS
+     ================================================================ -->
+<div id="page-progress" class="page">
+  <nav class="top-nav">
+    <span class="nav-logo">ACT Math Prep</span>
+    <button class="btn-home" onclick="goHome()">⌂ Home</button>
+  </nav>
+  <div class="page-inner">
+    <div class="page-header">
+      <h1>My Progress</h1>
+      <p>Track your improvement across all sessions and topics.</p>
+    </div>
+
+    <!-- All-time stats -->
+    <div class="stats-overview">
+      <div class="stat-box">
+        <div class="stat-val" id="stat-total">0</div>
+        <div class="stat-label">Total Questions</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="stat-correct">0</div>
+        <div class="stat-label">Correct</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="stat-pct">0%</div>
+        <div class="stat-label">Accuracy</div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-container">
+      <div class="chart-header">
+        <h2>Overall Performance</h2>
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-mode="count" onclick="setChartMode('count')">Count</button>
+          <button class="toggle-btn" data-mode="percent" onclick="setChartMode('percent')">%</button>
+        </div>
+      </div>
+      <canvas id="progress-chart"></canvas>
+    </div>
+
+    <!-- Topic breakdown -->
+    <div class="breakdown-section">
+      <h2>Topic Breakdown</h2>
+      <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:16px">Click any topic to see its detailed timeline.</p>
+      <div id="topic-breakdown-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAGE: TOPIC DETAIL (from Progress)
+     ================================================================ -->
+<div id="page-topic-detail" class="page">
+  <nav class="top-nav">
+    <span class="nav-logo">ACT Math Prep</span>
+    <button class="btn-home" onclick="goHome()">⌂ Home</button>
+  </nav>
+  <div class="page-inner">
+    <span class="back-link" onclick="showProgress()">← Back to Progress</span>
+    <div class="page-header">
+      <h1 id="topic-detail-title">Topic</h1>
+      <p>Overall: <strong id="topic-detail-overall">—</strong></p>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart-header">
+        <h2>Topic Timeline</h2>
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-mode="count" onclick="setChartMode('count')">Count</button>
+          <button class="toggle-btn" data-mode="percent" onclick="setChartMode('percent')">%</button>
+        </div>
+      </div>
+      <canvas id="topic-chart" style="width:100%;height:200px;display:block"></canvas>
+    </div>
+
+    <div class="breakdown-section">
+      <h2>Skill Breakdown</h2>
+      <div id="topic-skill-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAGE: REVIEW MODE SELECTOR
+     ================================================================ -->
+<div id="page-review-mode" class="page">
+  <nav class="top-nav">
+    <span class="nav-logo">ACT Math Prep</span>
+    <button class="btn-home" onclick="goHome()">⌂ Home</button>
+  </nav>
+  <div class="page-inner">
+    <div class="page-header">
+      <h1>Review</h1>
+      <p>Choose your practice mode and topic focus.</p>
+    </div>
+
+    <!-- Mode selection -->
+    <div class="topic-filter-section">
+      <h3>Practice Mode</h3>
+      <div class="mode-grid">
+        <div class="mode-card selected" data-mode="all" onclick="selectMode('all')">
+          <span class="mode-icon">🎯</span>
+          <h3>Adaptive</h3>
+          <p>Mix of all types — weak areas appear more often, strong areas every now and then.</p>
+        </div>
+        <div class="mode-card" data-mode="problem-areas" onclick="selectMode('problem-areas')">
+          <span class="mode-icon">🔥</span>
+          <h3>Problem Areas</h3>
+          <p>Focus on the question types you answer incorrectly most often.</p>
+        </div>
+        <div class="mode-card" data-mode="easy-wins" onclick="selectMode('easy-wins')">
+          <span class="mode-icon">⭐</span>
+          <h3>Easy Wins</h3>
+          <p>Practice the question types you already do well on to stay sharp.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Topic filter -->
+    <div class="topic-filter-section">
+      <h3>Filter by Topic (optional)</h3>
+      <div class="topic-chips" id="review-topic-chips"></div>
+      <div class="skill-chips" id="review-skill-chips" style="margin-top:12px"></div>
+    </div>
+
+    <button class="btn btn-primary btn-lg" onclick="startPractice()" style="margin-top:8px">
+      Start Practicing →
+    </button>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAGE: PRACTICE
+     ================================================================ -->
+<div id="page-practice" class="page">
+  <nav class="top-nav">
+    <span class="nav-logo">ACT Math Prep</span>
+    <button class="btn-home" onclick="goHome()">⌂ Home</button>
+  </nav>
+
+  <!-- Session bar -->
+  <div class="session-bar">
+    <span>Session: <span class="session-score" id="session-score">0/0 correct</span></span>
+    <span>
+      <button class="btn-timer" id="btn-timer" onclick="toggleTimer()">▶ Start Stopwatch</button>
+      <span id="timer-display" style="font-family:var(--font-mono);font-size:0.9rem;margin-left:10px;color:var(--accent)">0:00</span>
+    </span>
+  </div>
+
+  <div class="page-inner" style="padding-top:28px">
+    <!-- Question card -->
+    <div class="question-card">
+      <div class="question-meta">
+        <span class="q-badge" id="q-topic-badge">Topic</span>
+        <span class="q-number" id="q-number">Q1</span>
+      </div>
+      <div class="question-text" id="q-text">Loading question...</div>
+      <div class="choices-grid" id="choices-grid"></div>
+    </div>
+
+    <!-- Feedback -->
+    <div id="feedback-box"></div>
+
+    <!-- Actions -->
+    <div class="question-actions">
+      <button id="next-btn" class="btn btn-primary" style="display:none" onclick="loadNextQuestion()">
+        Next Question →
+      </button>
+      <button class="btn btn-secondary" onclick="showReviewMode()">Change Settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     SCRIPTS — order matters!
+     ================================================================ -->
+<script src="js/questions.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
